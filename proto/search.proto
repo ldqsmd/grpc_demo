@@ -1,0 +1,20 @@
+syntax = "proto3";
+package proto;
+
+
+service SearchService{
+    rpc Search (SearchRequest) returns (SearchResponse) {}
+}
+
+//搜索请求
+message SearchRequest {
+    //请求参数
+    string request = 1;
+
+}
+//搜索响应
+message SearchResponse {
+    //响应参数
+    string response = 1;
+    int32  lenth    = 2;
+}
