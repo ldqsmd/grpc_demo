@@ -8,7 +8,9 @@ require (
 	github.com/golang/protobuf v1.3.2
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/google/pprof v0.0.0-20190908185732-236ed259b199 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
+	github.com/jinzhu/configor v1.1.1
 	github.com/kr/pty v1.1.8 // indirect
 	github.com/rogpeppe/go-internal v1.4.0 // indirect
 	go.opencensus.io v0.22.1 // indirect

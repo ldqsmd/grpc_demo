@@ -1,60 +1,46 @@
-package  main
+package main
 
 import (
-	"crypto/tls"
-	"crypto/x509"
+	"fmt"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+	"grpc_demo/mid"
 	pb "grpc_demo/proto"
 	"grpc_demo/server"
-	"io/ioutil"
+	"grpc_demo/util/conf"
+	"grpc_demo/util/gtls"
 	"log"
 	"net"
 )
 
-const (
-	port  = "9001"
-	srvPem = "./conf/cert/server/server.pem"
-	srvKey = "./conf/cert/server/server.key"
-	caPem  = "./conf/cert/ca.pem"
-)
+func init() {
+	conf.InitConfig()
+}
 
+func main() {
 
-func main()  {
-
-	//从证书相关文件中读取和解析信息 得到证书公钥 秘钥对
-	cert, err := tls.LoadX509KeyPair(srvPem, srvKey)
+	list, err := net.Listen("tcp", ":"+conf.Config.Server.Port)
 	if err != nil {
-		log.Fatalf("tls.LoadX509KeyPair err: %v", err)
+		log.Fatalf("net.listen err:%v", err.Error())
 	}
-	//创建一个新的、空的 CertPool
-	certPool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile(caPem)
+	//TLS 认证
+	serverTLS := gtls.NewServerTLS()
+	creds, err := serverTLS.GetTLSCredentials()
 	if err != nil {
-		log.Fatalf("ioutil.ReadFile err: %v", err)
+		log.Fatalf("credentials.NewClientTLSFromFile 异常：%+v", err)
 	}
+	//grpc.UnaryInterceptor()
+	server := grpc.NewServer(
+		grpc.Creds(creds),
+		grpc.UnaryInterceptor(
+			grpc_middleware.ChainUnaryServer(mid.AuthRequestToken),
+		),
+	)
+	pb.RegisterSearchServiceServer(server, &srv.SearchService{})
 
-	//尝试解析所传入的pem编码证书 如果解析成功 将其加到 cerpool 中 便于后面使用
-	if ok := certPool.AppendCertsFromPEM(ca); !ok {
-		log.Fatalf("certPool.AppendCertsFromPEM err")
-	}
-	//构建基于TLS的 TransportCredentials 选项
-	c := credentials.NewTLS(&tls.Config{//Config 结构用于配置 TLS 客户端或服务器
-		//设置证书链，允许包含一个或多个
-		Certificates: []tls.Certificate{cert},
-		//要求必须校验客户端的证书。可以根据实际情况选用以下参数：
-		ClientAuth:   tls.RequireAndVerifyClientCert,
-		//设置根证书的集合，校验方式使用 ClientAuth 中设定的模式
-		ClientCAs:    certPool,
-	})
+	fmt.Println("服务启动成功")
 
-	server := grpc.NewServer(grpc.Creds(c))
-	//server := grpc.NewServer()
-	pb.RegisterSearchServiceServer(server,&srv.SearchService{})
-
-	list,err := net.Listen("tcp",":"+port)
-	if err != nil {
-	log.Fatalf("net.listen err:%v",err.Error())
+	if err := server.Serve(list); err != nil {
+		log.Fatalf("grpc异常：%+v", err)
 	}
-	server.Serve(list)
-	}
+}
