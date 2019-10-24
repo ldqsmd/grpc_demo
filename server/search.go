@@ -15,3 +15,9 @@ func (this *SearchService) Search(ctx context.Context, in *pb.SearchRequest) (ou
 	out = &pb.SearchResponse{Response: "Fuck the world !", Lenth: 18}
 	return
 }
+
+func (this *SearchService) Echo(ctx context.Context, in *pb.StringMessage) (out *pb.StringMessage, err error) {
+	fmt.Println("echo:", in.Words)
+	out = &pb.StringMessage{Words: in.Words}
+	return
+}

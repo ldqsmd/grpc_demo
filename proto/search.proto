@@ -1,15 +1,22 @@
 syntax = "proto3";
 package proto;
+import "google/api/annotations.proto";
 
 
 service SearchService{
     rpc Search (SearchRequest) returns (SearchResponse) {}
+    rpc Echo(StringMessage) returns (StringMessage) {
+        option (google.api.http) = {
+            post: "/v1/echo"
+            body: "*"
+        };
+    }
 }
 
 //搜索请求
 message SearchRequest {
     //请求参数
-    string request = 1;
+    string request = 1  ;
 
 }
 //搜索响应
@@ -18,3 +25,8 @@ message SearchResponse {
     string response = 1;
     int32  lenth    = 2;
 }
+
+message StringMessage{
+    string words =1 ;
+}
+

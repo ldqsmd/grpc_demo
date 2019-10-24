@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"fmt"
 	"google.golang.org/grpc/credentials"
 	"grpc_demo/util/conf"
 	"io/ioutil"
@@ -11,23 +12,23 @@ import (
 
 type Server struct {
 	CaFile  string
-	CerFile string
+	CrtFile string
 	KeyFile string
 }
 
-func NewServerTLS() *Server {
-
-	return &Server{
-		CerFile: conf.Config.TLS.CerFile,
-		KeyFile: conf.Config.TLS.TLSKey,
-	}
-
+func NewServerTLS() (srv *Server) {
+	srv = new(Server)
+	srv.CaFile = conf.Config.CA.CACrt
+	srv.CrtFile = conf.Config.ServerTLS.ServerCrtFile
+	srv.KeyFile = conf.Config.ServerTLS.ServerTLSKey
+	fmt.Printf("serverTLS %+v \n", srv)
+	return
 }
 
 //tls证书验证
 func (this *Server) GetTLSCredentials() (creds credentials.TransportCredentials, err error) {
 	//TLS 认证
-	creds, err = credentials.NewServerTLSFromFile(this.CerFile, this.KeyFile)
+	creds, err = credentials.NewServerTLSFromFile(this.CrtFile, this.KeyFile)
 	return
 }
 
@@ -35,7 +36,7 @@ func (this *Server) GetTLSCredentials() (creds credentials.TransportCredentials,
 func (this *Server) GetCredentiasCA() (creds credentials.TransportCredentials, err error) {
 
 	//从证书相关文件中读取和解析信息 得到证书公钥 秘钥对
-	cert, err := tls.LoadX509KeyPair(this.CerFile, this.KeyFile)
+	cert, err := tls.LoadX509KeyPair(this.CrtFile, this.KeyFile)
 	if err != nil {
 		return
 	}

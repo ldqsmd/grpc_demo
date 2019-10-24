@@ -9,9 +9,11 @@ require (
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/google/pprof v0.0.0-20190908185732-236ed259b199 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway v1.11.3
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/jinzhu/configor v1.1.1
 	github.com/kr/pty v1.1.8 // indirect
+	github.com/mwitkow/go-proto-validators v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.4.0 // indirect
 	go.opencensus.io v0.22.1 // indirect
 	golang.org/x/crypto v0.0.0-20190926180335-cea2066c6411 // indirect
@@ -25,7 +27,8 @@ require (
 	golang.org/x/tools v0.0.0-20190926165942-a8d5d34286bd // indirect
 	google.golang.org/api v0.10.0 // indirect
 	google.golang.org/appengine v1.6.4 // indirect
-	google.golang.org/genproto v0.0.0-20190926190326-7ee9db18f195 // indirect
+	google.golang.org/genproto v0.0.0-20191009194640-548a555dbc03
 	google.golang.org/grpc v1.24.0
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
+	gopkg.in/yaml.v2 v2.2.4 // indirect
 )

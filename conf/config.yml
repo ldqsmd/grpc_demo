@@ -2,3 +2,12 @@ server:
   port: 9001
   appid: hello
   appkey: world
+
+servertls:
+  servertlskey: conf/cert/server.key
+  servercrtfile: conf/cert/server.crt
+
+clienttls:
+  clienttlskey: conf/cert/server.key
+  clientcrtfile: conf/cert/server.crt
+  tlsservername: server.io

@@ -7,23 +7,43 @@ import (
 
 var Config = struct {
 
+	/**RPC server 配置**/
 	//GRPC 服务配置
 	Server struct {
 		ServerName string `default:"test"`
 		Port       string `default:"9001"`
-		AppId      string `default:"appid"`
-		AppKey     string `default:"appkey"`
+		//服务端token校验 appId appkey
+		AppId  string `default:"appid"`
+		AppKey string `default:"appkey"`
 	}
 
 	//TLS配置
-	TLS struct {
-		ServerName string `default:"grpc_demo"`
-		TLSKey     string `default:"conf/cert/tls/tls.key"`
-		CerFile    string `default:"conf/cert/tls/tls.pem"`
+	ServerTLS struct {
+		ServerName    string `default:"grpc-server"`
+		ServerTLSKey  string `default:"conf/cert/tls.key"`
+		ServerCrtFile string `default:"conf/cert/tls.crt"`
 	}
 
-	//接口token认证
-	AuthToken struct {
+	CA struct {
+		CAKey string `default:"conf/cert/ca.key"`
+		CACrt string `default:"conf/cert/ca.crt"`
+	}
+
+	/**RPC CLIENT 配置**/
+	Client struct {
+		//gRPC的服务名
+		ServerName string `default:"grpc-server"`
+		ServerPort string `default:"9001"`
+		//服务端预留token校验appId/appkey
+		AppId  string `default:"hello"`
+		AppKey string `default:"world"`
+	}
+
+	ClientTLS struct {
+		//生成TLS证书时serverName用于证书验证
+		TLSServerName string `default:"grpc-server"`
+		ClientTLSKey  string `default:"conf/cert/tls.key"`
+		ClientCrtFile string `default:"conf/cert/tls.crt"`
 	}
 }{}
 

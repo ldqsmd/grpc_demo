@@ -23,16 +23,18 @@ func main() {
 	if err != nil {
 		log.Fatalf("net.listen err:%v", err.Error())
 	}
-	//TLS 认证
 	serverTLS := gtls.NewServerTLS()
-	creds, err := serverTLS.GetTLSCredentials()
+	//TLS认证
+	//creds, err := serverTLS.GetTLSCredentials()
+	//CA证书认证
+	creds, err := serverTLS.GetCredentiasCA()
 	if err != nil {
-		log.Fatalf("credentials.NewClientTLSFromFile 异常：%+v", err)
+		log.Fatalf("tls 异常 异常：%+v", err)
 	}
-	//grpc.UnaryInterceptor()
 	server := grpc.NewServer(
 		grpc.Creds(creds),
 		grpc.UnaryInterceptor(
+			//引入开源RPC中间件
 			grpc_middleware.ChainUnaryServer(mid.AuthRequestToken),
 		),
 	)
