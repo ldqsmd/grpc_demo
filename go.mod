@@ -5,6 +5,7 @@ go 1.12
 require (
 	cloud.google.com/go v0.46.3 // indirect
 	github.com/creack/pty v1.1.9 // indirect
+	github.com/elazarl/go-bindata-assetfs v1.0.0 // indirect
 	github.com/golang/protobuf v1.3.2
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/google/pprof v0.0.0-20190908185732-236ed259b199 // indirect
@@ -12,6 +13,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.11.3
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/jinzhu/configor v1.1.1
+	github.com/jteeuwen/go-bindata v3.0.7+incompatible // indirect
 	github.com/kr/pty v1.1.8 // indirect
 	github.com/mwitkow/go-proto-validators v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.4.0 // indirect
