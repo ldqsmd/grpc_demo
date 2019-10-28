@@ -9,12 +9,14 @@ import (
 	"grpc_demo/server"
 	"grpc_demo/util/conf"
 	"grpc_demo/util/gtls"
+	"grpc_demo/util/trace"
 	"log"
 	"net"
 )
 
 func init() {
 	conf.InitConfig()
+	trace.JaegerConfigInit()
 }
 
 func main() {
@@ -31,11 +33,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("tls 异常 异常：%+v", err)
 	}
+
 	server := grpc.NewServer(
 		grpc.Creds(creds),
 		grpc.UnaryInterceptor(
 			//引入开源RPC中间件
-			grpc_middleware.ChainUnaryServer(mid.AuthRequestToken),
+			grpc_middleware.ChainUnaryServer(
+				mid.AuthRequestToken), //token 认证
 		),
 	)
 	pb.RegisterSearchServiceServer(server, &srv.SearchService{})
@@ -45,4 +49,6 @@ func main() {
 	if err := server.Serve(list); err != nil {
 		log.Fatalf("grpc异常：%+v", err)
 	}
+
+	defer trace.TraceClose()
 }

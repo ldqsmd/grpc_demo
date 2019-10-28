@@ -41,9 +41,9 @@ func main() {
 	}
 	fmt.Printf("resaa:%+v \n", res.GetResponse())
 
-	e, _ := client.Echo(context.Background(), &pb.StringMessage{
-		Words: "哎哟哟",
+	e, _ := client.Search(context.Background(), &pb.SearchRequest{
+		Request: "哎哟哟",
 	})
-	fmt.Printf("echo :%+v \n", e.GetWords())
+	fmt.Printf("echo :%+v \n", e.GetResponse())
 
 }

@@ -28,6 +28,11 @@ var Config = struct {
 		CAKey string `default:"conf/cert/ca.key"`
 		CACrt string `default:"conf/cert/ca.crt"`
 	}
+	Trace struct {
+		ServerName         string `default:"grpc-server"`
+		LocalAgentHostPort string `defautl:"127.0.0.1:6831"`
+		LogSpans           bool   `defautl:"false"`
+	}
 
 	/**RPC CLIENT 配置**/
 	Client struct {
